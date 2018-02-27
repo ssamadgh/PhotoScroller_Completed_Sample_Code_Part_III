@@ -6,4 +6,4 @@
 This is the Completed sample code of Designing Apps with Scroll Views _ Part III tutorial.
 In this tutorial you learn how to optimize your scroll view with tiles.
 
-To study this tutorial, go to **[here](https://medium.com/@ssamadgh/designing-apps-with-scroll-views-part-ii-page-scrolling-on-photos-948f78d2f683)**
+To study this tutorial, go to **[here](https://medium.com/@ssamadgh/designing-apps-with-scroll-views-part-iii-optimizing-with-tiles-3875535b4114)**
