@@ -14,6 +14,10 @@ class TilingView: UIView {
 	var url: URL
 	var tilingView: TilingView?
 
+	// We use these two properties to avoid accessing tiledLayer from bg thread:
+	var storedTileSize: CGSize!
+	var storedBounds: CGRect!
+	
 	override class var layerClass: AnyClass {
 		return CATiledLayer.self
 	}
@@ -43,6 +47,8 @@ class TilingView: UIView {
 		super.init(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
 		tiledLayer.levelsOfDetail = 4
 		
+		storedTileSize = tiledLayer.tileSize
+		storedBounds = self.bounds
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
@@ -61,8 +67,8 @@ class TilingView: UIView {
 		let scaleX: CGFloat = context.ctm.a
 		let scaleY: CGFloat = context.ctm.d
 
-		var tileSize = tiledLayer.tileSize
-
+		var tileSize = self.storedTileSize!
+		
 		// Even at scales lower than 100%, we are drawing into a rect in the coordinate system of the full
 		// image. One tile at 50% covers the width (in original image coordinates) of two tiles at 100%.
 		// So at 50% we need to stretch our tiles to double the width and height; at 25% we need to stretch
@@ -90,7 +96,7 @@ class TilingView: UIView {
 				
 				// if the tile would stick outside of our bounds, we need to truncate it so as
 				// to avoid stretching out the partial tiles at the right and bottom edges
-				tileRect = self.bounds.intersection(tileRect)
+				tileRect = self.storedBounds.intersection(tileRect)
 				tile.draw(in: tileRect)
 				
 				if false {
